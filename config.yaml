@@ -1,0 +1,53 @@
+agent:
+  base_url: http://localhost:11434
+  model: gemma4:26b
+  temperature: 0.1
+channels:
+  telegram:
+    enabled: false
+    token: TOKEN_HERE
+paths:
+  bible: D:\Coding\Python\cesare\bible.md
+  calendar_db: D:\Test\Cesare\workspace\chronos\calendar.db
+  logs: D:\Test\Cesare\workspace\logs\audit.log
+  memory_isolated:
+    orchestrator:
+      tier1_db: D:\Test\Cesare\workspace\memory\orchestrator\tier1.db
+      tier2_db: D:\Test\Cesare\workspace\memory\orchestrator\tier2.db
+      tier3_db: D:\Test\Cesare\workspace\memory\orchestrator\tier3.db
+      vector_db: D:\Test\Cesare\workspace\memory\orchestrator\vector_index
+    programmer:
+      tier1_db: D:\Test\Cesare\workspace\memory\programmer\tier1.db
+      tier2_db: D:\Test\Cesare\workspace\memory\programmer\tier2.db
+      tier3_db: D:\Test\Cesare\workspace\memory\programmer\tier3.db
+      vector_db: D:\Test\Cesare\workspace\memory\programmer\vector_index
+    researcher:
+      tier1_db: D:\Test\Cesare\workspace\memory\researcher\tier1.db
+      tier2_db: D:\Test\Cesare\workspace\memory\researcher\tier2.db
+      tier3_db: D:\Test\Cesare\workspace\memory\researcher\tier3.db
+      vector_db: D:\Test\Cesare\workspace\memory\researcher\vector_index
+    worker:
+      tier1_db: D:\Test\Cesare\workspace\memory\worker\tier1.db
+      tier2_db: D:\Test\Cesare\workspace\memory\worker\tier2.db
+      tier3_db: D:\Test\Cesare\workspace\memory\worker\tier3.db
+      vector_db: D:\Test\Cesare\workspace\memory\worker\vector_index
+  tier1_db: D:\Test\Cesare\workspace\logs\interactions.db
+  tier2_db: D:\Test\Cesare\workspace\memory\rom.db
+  tier3_db: D:\Test\Cesare\workspace\memory\experience.db
+  vector_db: D:\Test\Cesare\workspace\memory\vector_index
+  workspace: D:\Test\Cesare\workspace
+scheduler:
+  active: true
+team:
+  agent_timeout_seconds: 180
+  agents:
+    programmer:
+      model: gemma4:26b
+      temperature: 0.05
+    researcher:
+      model: gemma4:26b
+      temperature: 0.1
+    worker:
+      model: gemma4:26b
+      temperature: 0.2
+  enabled: true

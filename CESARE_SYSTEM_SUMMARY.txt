@@ -1,0 +1,86 @@
+===============================================================================
+CESARE - SPECIFICHE TECNICHE E ARCHITETTURA (KNOWLEDGE BASE PER LO SVILUPPO)
+===============================================================================
+
+1. IDENTITÀ E REGOLE SUPREME (BIBLE.MD)
+-------------------------------------------------------------------------------
+* Nome: CESARE (Agente Autonomo Locale).
+* Legge Suprema: bible.md (Iniettata come System Prompt in ogni invocazione).
+* Mantra: "Ogni comodità è un limite" (Rigorosità assoluta).
+* Obbligo Risposta: Ogni output deve iniziare con "Rispettando la Bibbia al 100%...".
+* Sandbox: Operatività limitata ESCLUSIVAMENTE a ./workspace/. 
+* Sicurezza: Divieto di comandi distruttivi. Audit log obbligatorio per ogni accesso al FS.
+* Override: Protocollo "BIBBIA OVERRIDE" per deroghe temporanee (solo dal Creatore).
+
+2. ARCHITETTURA DEL SOFTWARE
+-------------------------------------------------------------------------------
+* Linguaggio: Python 3.12+.
+* Core: LangGraph per l'orchestrazione del grafo di ragionamento.
+* LLM: Locale tramite Ollama (Modelli configurabili via config.yaml).
+* Frontend: Streamlit (GUI professionale con editor integrati e monitoraggio).
+* Scheduler: APScheduler (Modulo Chronos) per task proattivi.
+
+3. GERARCHIA DELLA MEMORIA (3 TIER)
+-------------------------------------------------------------------------------
+* Tier 1 (Effimera): Memoria a breve termine della sessione corrente (Chat history) mantenuta 30 giorni.
+* Tier 2 (ROM - Facts): SQLite/ChromaDB. Dati permanenti, preferenze utente e fatti immutabili.
+* Tier 3 (Esperienza - Growth Seeds): "Semi di crescita" distillati da errori o feedback positivi.
+  - Ogni fallimento genera un "Seme" per evitare l'errore in futuro.
+  
+
+4. MODALITÀ OPERATIVE
+-------------------------------------------------------------------------------
+A. MODALITÀ SINGOLO (graph.py):
+   - Ciclo Agent -> Tool -> Reflect diretto.
+   - Accesso diretto a tutti i tool di sistema.
+
+B. MODALITÀ TEAM (Orchestratore):
+   - CESARE (Orchestratore): Analizza, delega ai 3 agenti, assembla l'output finale e convalida la risposta rispetto alla Bibbia.
+   - RESEARCHER: Agente con pieni poteri per ricerca web, scraping e analisi documentale.
+   - PROGRAMMER: Agente con pieni poteri per sviluppo, debug e gestione codice nel workspace.
+   - WORKER: Agente con pieni poteri per automazione, file Office e task operativi complessi.
+
+5. STACK TECNOLOGICO E TOOLING
+-------------------------------------------------------------------------------
+* Database: SQLite (Chronos/Logs) e ChromaDB (Vettoriale per ROM/Experience).
+* Web: Playwright (per navigazione e scraping).
+* Documenti: 
+  - PDF: read_pdf
+  - Office: read_docx, create_docx, read_xlsx, create_xlsx, read_pptx.
+  - Immagini: inspect_image, ocr_image.
+  - Archivi: manage_archive (zip).
+* Configurazione: config.yaml (Single Source of Truth).
+
+6. STRUTTURA CARTELLE CRITICA
+-------------------------------------------------------------------------------
+* ./workspace/        -> Unica area di scrittura/lettura dell'agente.
+* ./workspace/Chronos/ -> Database calendari e task scadenzati.
+* ./agent/            -> Logica LangGraph (state, memory, nodes).
+* ./agents/           -> Classi per multi-agente (base_agent, orchestrator, ecc.).
+* ./tools/            -> Implementazione atomica dei tool.
+* ./gui/              -> Componenti dell'interfaccia Streamlit.
+
+7. PROTOCOLLI DI SVILUPPO (DA SEGUIRE PER MODIFICHE)
+-------------------------------------------------------------------------------
+* Retrocompatibilità: Il passaggio tra Single e Team mode deve essere trasparente.
+* Gestione Errori: Un errore di un agente non deve mai crashare l'orchestratore.
+* Logging: Usare sempre il logger "CESARE.[NomeModulo]" invece di print().
+* Tool Call: Protocollo "Read-Before-Act". Leggere sempre un file prima di modificarlo.
+* Config: Mai hardcodare path o modelli; usare sempre il dizionario config caricato.
+
+8. PROCESSO DI RIFLESSIONE (REFLECT NODE)
+-------------------------------------------------------------------------------
+Al termine di ogni interazione, Cesare analizza:
+1. Errori degli agenti -> Genera Semi di Fallimento nelle collezioni specifiche.
+2. Validazione Audit di Cesare -> Scrive feedback evolutivi per migliorare la sintesi futura.
+L'architettura è stata alleggerita rimuovendo Synthesizer e Audit come agenti separati, integrandoli nel core di Cesare.
+
+9. SISTEMA DI LOGGING E AUDIT
+-------------------------------------------------------------------------------
+* Standard: Utilizzo del modulo `logging` di Python con gerarchia "CESARE.[NomeModulo]".
+* Audit Log FS: Obbligatorio per ogni operazione di lettura/scrittura nel workspace.
+* Log Orchestrazione: Formato specifico "ORCHESTRATOR | STEP | dettaglio" per il tracciamento dei task delegati.
+* Persistenza: I log vengono salvati nella cartella `./logs/` per analisi post-esecuzione.
+* Monitoraggio GUI: Streamlit integra un visualizzatore in tempo reale dei log di sistema.
+* Regola Aurea: Divieto assoluto di usare `print()`; ogni output diagnostico deve passare per il logger configurato per garantire consistenza e auditabilità.
+===============================================================================
